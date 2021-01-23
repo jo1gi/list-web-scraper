@@ -1,0 +1,6 @@
+sites:
+  - name: "Test"
+    url: "https://example.com"
+    structure:
+      CONTAINER:
+        selector: "asd"

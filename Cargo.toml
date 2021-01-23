@@ -1,0 +1,21 @@
+[package]
+name = "spanreed"
+version = "0.1.0"
+authors = ["Joakim Holm <joakimholm@protonmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+structopt = "0.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.8"
+serde_json = "^1.0"
+dirs = "3.0"
+tokio = { version = "^0.2.5", features = ["full"] }
+futures = "0.3"
+scraper = "0.12.0"
+reqwest = { version = "0.10" }
+displaydoc = "0.1"
+thiserror = "1.0"
+mlua = { version = "0.4", features = ["lua53"] }

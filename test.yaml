@@ -1,0 +1,12 @@
+sites:
+  - name: "Arch Wiki"
+    url: "https://wiki.archlinux.org/"
+    structure:
+      CONTAINER:
+        selector: ".archwiki-main-page-columns dl"
+      site:
+        value: "Arch Wiki"
+      title:
+        selector: "a"
+      description:
+        selector: "dd"
