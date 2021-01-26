@@ -10,7 +10,17 @@ pub fn get_lua_config(name: &str) -> Result<Lua, SpanreedError> {
     return Ok(lua);
 }
 
+/// Returns the contents of the lua file
 fn get_functions_file_data(name: &str) -> Result<Vec<u8>, SpanreedError> {
-    let function_path = find_config(name, "lua")?;
+    let function_path = match find_config(name, "lua") {
+        Ok(path) => path,
+        Err(e) => {
+            if name == "functions" {
+                return Ok(Vec::new());
+            } else {
+                return Err(e);
+            }
+        }
+    };
     return Ok(std::fs::read(function_path)?);
 }
