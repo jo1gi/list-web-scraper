@@ -5,7 +5,6 @@ use futures::future;
 use scraper::html::Html;
 use scraper::Selector;
 use scraper::element_ref::ElementRef;
-use serde::Serialize;
 use mlua::prelude::Lua;
 
 /// Scrapes websites described in `config`
@@ -17,7 +16,7 @@ pub async fn scrape(config: Config, lua_env: &Lua) -> Result<Output, SpanreedErr
     for i in future::join_all(sites).await {
         output.extend(i);
     }
-    return Ok(Output(output));
+    return Ok(output);
 }
 
 /// Download website and parse it as a html document
@@ -82,7 +81,7 @@ fn find_elements<'a>(tree: &'a ElementRef, structure: &'a Element) -> Option<Vec
     return Some(tree.select(&selector).collect());
 }
 
-/// Runs user function from lua file with arguments from scraped website
+/// Runs user defined function from lua file with arguments from scraped website
 fn run_lua_function(tree: &ElementRef, func: &Function, lua_env: &Lua) -> Result<String, SpanreedError> {
     let args = match &func.args {
         Some(args) => {
@@ -167,5 +166,4 @@ async fn scrape_site(site: &Site, lua_env: &Lua) -> Vec<HashMap<String, String>>
 }
 
 /// Output format
-#[derive(Debug, Serialize)]
-pub struct Output(pub Vec<HashMap<String, String>>);
+pub type Output = Vec<HashMap<String, String>>;

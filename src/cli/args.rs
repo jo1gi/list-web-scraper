@@ -28,4 +28,8 @@ pub struct Args {
     /// Lua file to load functions from
     #[structopt(long, default_value="functions")]
     pub lua_file: String,
+
+    /// Lua code to filter through entries in the output
+    #[structopt(short, long)]
+    pub filter: Option<String>
 }
