@@ -31,5 +31,9 @@ pub struct Args {
 
     /// Lua code to filter through entries in the output
     #[structopt(short, long)]
-    pub filter: Option<String>
+    pub filter: Option<String>,
+
+    /// Key
+    #[structopt(short, long)]
+    pub key: Option<String>,
 }

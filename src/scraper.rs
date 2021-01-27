@@ -8,10 +8,10 @@ use scraper::element_ref::ElementRef;
 use mlua::prelude::Lua;
 
 /// Scrapes websites described in `config`
-pub async fn scrape(config: Config, lua_env: &Lua) -> Result<Output, SpanreedError> {
+pub async fn scrape(config: Config, lua_env: &Lua, key: &Option<String>) -> Result<Output, SpanreedError> {
     let mut output = Vec::new();
     let sites: Vec<_> = config.sites.iter()
-        .map(|site| scrape_site(site, lua_env))
+        .map(|site| scrape_site(site, lua_env, key))
         .collect();
     for i in future::join_all(sites).await {
         output.extend(i);
@@ -132,14 +132,24 @@ fn get_element(tree: &ElementRef, structure: &Element, lua_env: &Lua) -> Option<
     return Some(value);
 }
 
+/// Creates url from url template and key
+fn create_url(url: &str, key: &Option<String>) -> String {
+    match key {
+        Some(k) => url.replace("{key}", k),
+        None => url.to_string(),
+    }
+}
+
+
 /// Scrapes a single website described in `site`
-async fn scrape_site(site: &Site, lua_env: &Lua) -> Vec<HashMap<String, String>> {
+async fn scrape_site(site: &Site, lua_env: &Lua, key: &Option<String>) -> Vec<HashMap<String, String>> {
     let mut output = Vec::new();
     if !site.structure.contains_key("CONTAINER") {
         return output;
     }
+    let url = create_url(&site.url, key);
     // Downlaoding site
-    let tree = match download_site(&site.url, &site.headers).await {
+    let tree = match download_site(&url, &site.headers).await {
         Ok(tree) => tree,
         Err(_) => return output,
     };
