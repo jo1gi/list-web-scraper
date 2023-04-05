@@ -1,4 +1,4 @@
-# Spanreed
+# list-web-scraper
 Easy web scraping of lists
 
 ## Usage
